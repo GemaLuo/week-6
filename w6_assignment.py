@@ -52,8 +52,9 @@ def signin():
     password=request.form["password"]
     if username=="" or password=="":
         return redirect ("http://127.0.0.1:3000/error?message=帳號或密碼輸入錯誤")
-    data="SELECT * FROM member WHERE username='%s' AND password='%s'" %(username, password) # %string formatting 
-    cursor.execute(data)
+    data="SELECT * FROM member WHERE username=%s AND password=%s" # %string formatting 
+    input=(username, password)
+    cursor.execute(data, input) #用excute()2nd參數帶入資料，防止SQL Injection攻擊！
     result=cursor.fetchone()
     if result!=None: #若result正確
         session["signname"]=result[1]
